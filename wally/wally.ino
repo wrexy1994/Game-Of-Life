@@ -1,8 +1,7 @@
 #include <Adafruit_NeoPixel.h>
 #include <Adafruit_NeoMatrix.h>
 #include "wally.h"
-
-#define DISPLAY_SLOWNESS 200
+#inlcude "efects.h"
 
 #define MINUTES 60 * 100
 #define TIMER_GAME 5 * MINUTES
@@ -13,6 +12,7 @@
 
 unsigned long last_change = 0;
 bool show_game = true;
+int display_slowness = 200;
 
 Adafruit_NeoPixel pixels(BOARD_SIZE, LED_PIN, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoMatrix *matrix = new Adafruit_NeoMatrix(BOARD_WIDTH, BOARD_HEIGHT, LED_PIN,
@@ -35,7 +35,7 @@ void setup()
 
 void loop()
 {
-  if (true)
+  if (show_game)
   {
     if ((millis() - last_change) > TIMER_GAME)
     {
@@ -43,7 +43,20 @@ void loop()
       last_change = millis();
     }
     Serial.println("Displaying Game");
-    display_game(&pixels);
+//    display_slowness = 200;
+//    display_game(&pixels);
+//    display_slowness = 20;
+//    rainbowEffect(matrix);
+//    display_slowness = 20;
+//    colorWipe(&pixels);
+//    display_slowness = 20;
+//    rainbow(&pixels);
+//    display_slowness = 20;
+//    rainbowCycle(&pixels);
+//    display_slowness = 50;
+//    theaterChase(&pixels);
+    display_slowness = 50;
+    theaterChaseRainbow(&pixels);
   }
   else
   {
@@ -55,5 +68,5 @@ void loop()
     Serial.println("Displaying Temp");
     display_temp(matrix, DHT_PIN);
   }
-  delay(DISPLAY_SLOWNESS);
+  delay(display_slowness);
 }
