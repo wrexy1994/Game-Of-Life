@@ -9,9 +9,11 @@
 
 #define DHT_PIN 9
 #define LED_PIN 11
+#define MAX_EFFECT 7
 
 unsigned long last_change = 0;
 bool show_game = true;
+uint8_t show_effect = 0;
 int display_slowness = 200;
 
 Adafruit_NeoPixel pixels(BOARD_SIZE, LED_PIN, NEO_GRB + NEO_KHZ800);
@@ -41,25 +43,45 @@ void loop()
     {
       show_game = false;
       last_change = millis();
+      show_effect++;
+      show_effect %= MAX_EFFECT;
     }
-    Serial.println("Displaying Game");
-//    display_slowness = 200;
-//    display_game(&pixels);
-//    display_slowness = 20;
-//    rainbowEffect(matrix);
-//    display_slowness = 20;
-//    colorWipe(&pixels);
-//    display_slowness = 20;
-//    rainbow(&pixels);
-//    display_slowness = 20;
-//    rainbowCycle(&pixels);
-//    display_slowness = 50;
-//    theaterChase(&pixels);
-    display_slowness = 50;
-    theaterChaseRainbow(&pixels);
+    Serial.println("Displaying effects");
+    switch (show_effect)
+    {
+    case 0:
+      display_slowness = 200;
+      display_game(&pixels);
+      break;
+    case 1:
+      display_slowness = 20;
+      rainbowEffect(matrix);
+      break;
+    case 2:
+      display_slowness = 50;
+      colorWipe(&pixels);
+      break;
+    case 3:
+      display_slowness = 50;
+      rainbow(&pixels);
+      break;
+    case 4:
+      display_slowness = 50;
+      rainbowCycle(&pixels);
+      break;
+    case 5:
+      display_slowness = 50;
+      theaterChase(&pixels);
+      break;
+    case 6:
+      display_slowness = 50;
+      theaterChaseRainbow(&pixels);
+      break;
+    }
   }
   else
   {
+    display_slowness = 1000; // DHT updates once every second
     if ((millis() - last_change) > TIMER_TEMP)
     {
       show_game = true;
