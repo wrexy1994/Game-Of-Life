@@ -39,13 +39,6 @@ void loop()
 {
   if (show_game)
   {
-    if ((millis() - last_change) > TIMER_GAME)
-    {
-      show_game = false;
-      last_change = millis();
-      show_effect++;
-      show_effect %= MAX_EFFECT;
-    }
     Serial.println("Displaying effects");
     switch (show_effect)
     {
@@ -77,6 +70,13 @@ void loop()
       display_slowness = 50;
       theaterChaseRainbow(&pixels);
       break;
+    }
+    if ((millis() - last_change) > TIMER_GAME)
+    {
+      show_game = false;
+      last_change = millis();
+      show_effect++;
+      show_effect %= MAX_EFFECT;
     }
   }
   else
